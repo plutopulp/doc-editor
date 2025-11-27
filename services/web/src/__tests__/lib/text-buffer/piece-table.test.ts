@@ -25,6 +25,34 @@ describe("PieceTable", () => {
       const buffer = new PieceTable("hello world");
       expect(buffer.length()).toBe(11);
     });
+
+    it("should match expected value after multiple inserts", () => {
+      const buffer = new PieceTable("hello");
+      expect(buffer.length()).toBe(5);
+
+      buffer.insert(5, " world");
+      expect(buffer.length()).toBe(11);
+
+      buffer.insert(0, "Say ");
+      expect(buffer.length()).toBe(15);
+
+      buffer.insert(15, "!");
+      expect(buffer.length()).toBe(16);
+    });
+
+    it("should decrement correctly after deletes", () => {
+      const buffer = new PieceTable("hello world");
+      expect(buffer.length()).toBe(11);
+
+      buffer.delete(5, 11);
+      expect(buffer.length()).toBe(5);
+
+      buffer.delete(0, 2);
+      expect(buffer.length()).toBe(3);
+
+      buffer.delete(0, 3);
+      expect(buffer.length()).toBe(0);
+    });
   });
 
   describe("getSlice()", () => {
@@ -143,6 +171,21 @@ describe("PieceTable", () => {
     });
   });
 
+  describe("coalescing", () => {
+    it("should coalesce adjacent pieces after multiple inserts in same region", () => {
+      const buffer = new PieceTable("hello");
+      expect(buffer.getPieceCount()).toBe(1); // initial piece
+
+      buffer.insert(5, "X");
+      expect(buffer.getPieceCount()).toBe(2); // original + add
+
+      buffer.insert(6, "Y");
+      // After coalescing, the two adjacent add pieces should merge
+      expect(buffer.getPieceCount()).toBe(2); // original + merged add
+      expect(buffer.toString()).toBe("helloXY");
+    });
+  });
+
   describe("more complex scenarios", () => {
     it("should handle insert after delete", () => {
       const buffer = new PieceTable("hello world");
@@ -206,6 +249,21 @@ describe("PieceTable", () => {
           "Start index out of bounds"
         );
       });
+
+      it("should throw error when end > length", () => {
+        expect(() => buffer.getSlice(0, 10)).toThrow(
+          "Slice end index out of bounds"
+        );
+      });
+    });
+
+    describe("getSlice() on empty buffer", () => {
+      it("should throw error when end > length on empty buffer", () => {
+        const buffer = new PieceTable("");
+        expect(() => buffer.getSlice(0, 1)).toThrow(
+          "Slice end index out of bounds"
+        );
+      });
     });
 
     describe("insert()", () => {
@@ -255,6 +313,18 @@ describe("PieceTable", () => {
       it("should throw error when start > end", () => {
         expect(() => buffer.delete(5, 3)).toThrow(
           "Start index must be <= end index"
+        );
+      });
+
+      it("should throw error when deleting past end", () => {
+        expect(() => buffer.delete(0, 20)).toThrow(
+          "Deletion end index out of bounds"
+        );
+      });
+
+      it("should throw error when deleting from index > length", () => {
+        expect(() => buffer.delete(20, 25)).toThrow(
+          "Deletion start index out of bounds"
         );
       });
     });

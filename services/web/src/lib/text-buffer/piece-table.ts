@@ -5,16 +5,22 @@ export class PieceTable implements TextBuffer {
   private original: string;
   private add: string;
   private pieces: Piece[];
+  private totalLength: number;
 
   constructor(initial: string) {
     this.original = initial;
     this.add = "";
     this.pieces =
       initial.length > 0 ? [new Piece("original", 0, initial.length)] : [];
+    this.totalLength = initial.length;
   }
 
   length(): number {
-    return this.pieces.reduce((acc, p) => acc + p.length, 0);
+    return this.totalLength;
+  }
+
+  getPieceCount(): number {
+    return this.pieces.length;
   }
 
   toString(): string {
@@ -22,6 +28,7 @@ export class PieceTable implements TextBuffer {
   }
 
   getSlice(start: number, end: number): string {
+    const totalLength = this.length();
     if (start < 0) {
       throw new Error("Start index must be non-negative");
     }
@@ -31,8 +38,11 @@ export class PieceTable implements TextBuffer {
     if (start > end) {
       throw new Error("Start index must be <= end index");
     }
-    if (start > this.length()) {
+    if (start > totalLength) {
       throw new Error("Start index out of bounds");
+    }
+    if (end > totalLength) {
+      throw new Error("Slice end index out of bounds");
     }
 
     let result = "";
@@ -73,6 +83,7 @@ export class PieceTable implements TextBuffer {
     // Append text to add buffer
     const addStart = this.add.length;
     this.add += text;
+    this.totalLength += text.length;
 
     // Find piece containing insertion position
     let index = 0;
@@ -118,6 +129,7 @@ export class PieceTable implements TextBuffer {
     }
 
     this.pieces = newPieces;
+    this.coalesce();
   }
 
   delete(start: number, end: number): void {
@@ -130,6 +142,19 @@ export class PieceTable implements TextBuffer {
     if (start > end) {
       throw new Error("Start index must be <= end index");
     }
+
+    const totalLength = this.length();
+
+    if (start > totalLength) {
+      throw new Error("Deletion start index out of bounds");
+    }
+
+    if (end > totalLength) {
+      throw new Error("Deletion end index out of bounds");
+    }
+
+    const deleted = end - start;
+    this.totalLength -= deleted;
 
     let pos = 0;
     const newPieces: Piece[] = [];
@@ -166,5 +191,30 @@ export class PieceTable implements TextBuffer {
     }
 
     this.pieces = newPieces;
+    this.coalesce();
+  }
+
+  private coalesce(): void {
+    const merged: Piece[] = [];
+
+    for (const p of this.pieces) {
+      const last = merged[merged.length - 1];
+
+      if (
+        last &&
+        last.buffer === p.buffer &&
+        last.start + last.length === p.start
+      ) {
+        merged[merged.length - 1] = new Piece(
+          last.buffer,
+          last.start,
+          last.length + p.length
+        );
+      } else {
+        merged.push(new Piece(p.buffer, p.start, p.length));
+      }
+    }
+
+    this.pieces = merged;
   }
 }
