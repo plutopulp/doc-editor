@@ -22,6 +22,19 @@ export class PieceTable implements TextBuffer {
   }
 
   getSlice(start: number, end: number): string {
+    if (start < 0) {
+      throw new Error("Start index must be non-negative");
+    }
+    if (end < 0) {
+      throw new Error("End index must be non-negative");
+    }
+    if (start > end) {
+      throw new Error("Start index must be <= end index");
+    }
+    if (start > this.length()) {
+      throw new Error("Start index out of bounds");
+    }
+
     let result = "";
     let pos = 0;
 
@@ -50,6 +63,13 @@ export class PieceTable implements TextBuffer {
   }
 
   insert(pos: number, text: string): void {
+    if (pos < 0) {
+      throw new Error("Position must be non-negative");
+    }
+    if (pos > this.length()) {
+      throw new Error("Position out of bounds");
+    }
+
     // Append text to add buffer
     const addStart = this.add.length;
     this.add += text;
@@ -101,6 +121,16 @@ export class PieceTable implements TextBuffer {
   }
 
   delete(start: number, end: number): void {
+    if (start < 0) {
+      throw new Error("Start index must be non-negative");
+    }
+    if (end < 0) {
+      throw new Error("End index must be non-negative");
+    }
+    if (start > end) {
+      throw new Error("Start index must be <= end index");
+    }
+
     let pos = 0;
     const newPieces: Piece[] = [];
 

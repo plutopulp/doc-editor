@@ -142,4 +142,121 @@ describe("PieceTable", () => {
       expect(buffer.length()).toBe(0);
     });
   });
+
+  describe("more complex scenarios", () => {
+    it("should handle insert after delete", () => {
+      const buffer = new PieceTable("hello world");
+      buffer.delete(5, 11); // 'hello'
+      buffer.insert(5, "!"); // 'hello!'
+
+      expect(buffer.toString()).toBe("hello!");
+      expect(buffer.length()).toBe(6);
+    });
+
+    it("should maintain consistency after many edits", () => {
+      const buffer = new PieceTable("abc");
+      buffer.insert(1, "X"); // 'aXbc'
+      buffer.insert(4, "Y"); // 'aXbcY'
+      buffer.delete(1, 2); // 'abcY'
+      buffer.insert(0, "Z"); // 'ZabcY'
+
+      expect(buffer.toString()).toBe("ZabcY");
+      expect(buffer.length()).toBe(5);
+    });
+
+    it("should handle alternating inserts and deletes", () => {
+      const buffer = new PieceTable("test");
+      buffer.insert(4, "ing"); // 'testing'
+      buffer.delete(0, 4); // 'ing'
+      buffer.insert(0, "runn"); // 'running'
+
+      expect(buffer.toString()).toBe("running");
+      expect(buffer.length()).toBe(7);
+    });
+  });
+
+  describe("bounds checking", () => {
+    describe("getSlice()", () => {
+      let buffer: PieceTable;
+
+      beforeEach(() => {
+        buffer = new PieceTable("hello");
+      });
+
+      it("should throw error for negative start index", () => {
+        expect(() => buffer.getSlice(-1, 3)).toThrow(
+          "Start index must be non-negative"
+        );
+      });
+
+      it("should throw error for negative end index", () => {
+        expect(() => buffer.getSlice(0, -1)).toThrow(
+          "End index must be non-negative"
+        );
+      });
+
+      it("should throw error when start > end", () => {
+        expect(() => buffer.getSlice(3, 2)).toThrow(
+          "Start index must be <= end index"
+        );
+      });
+
+      it("should throw error when start > length", () => {
+        expect(() => buffer.getSlice(10, 15)).toThrow(
+          "Start index out of bounds"
+        );
+      });
+    });
+
+    describe("insert()", () => {
+      let buffer: PieceTable;
+
+      beforeEach(() => {
+        buffer = new PieceTable("hello");
+      });
+
+      it("should throw error for negative position", () => {
+        expect(() => buffer.insert(-1, "test")).toThrow(
+          "Position must be non-negative"
+        );
+      });
+
+      it("should throw error when position > length", () => {
+        expect(() => buffer.insert(10, "test")).toThrow(
+          "Position out of bounds"
+        );
+      });
+
+      it("should allow inserting at length (append)", () => {
+        buffer.insert(5, " world");
+        expect(buffer.toString()).toBe("hello world");
+      });
+    });
+
+    describe("delete()", () => {
+      let buffer: PieceTable;
+
+      beforeEach(() => {
+        buffer = new PieceTable("hello world");
+      });
+
+      it("should throw error for negative start index", () => {
+        expect(() => buffer.delete(-1, 5)).toThrow(
+          "Start index must be non-negative"
+        );
+      });
+
+      it("should throw error for negative end index", () => {
+        expect(() => buffer.delete(0, -1)).toThrow(
+          "End index must be non-negative"
+        );
+      });
+
+      it("should throw error when start > end", () => {
+        expect(() => buffer.delete(5, 3)).toThrow(
+          "Start index must be <= end index"
+        );
+      });
+    });
+  });
 });
