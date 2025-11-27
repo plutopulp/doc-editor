@@ -108,4 +108,38 @@ describe("PieceTable", () => {
       expect(buffer.length()).toBe(4);
     });
   });
+
+  describe("delete()", () => {
+    it("should delete from start", () => {
+      const buffer = new PieceTable("hello world");
+      buffer.delete(0, 6);
+
+      expect(buffer.toString()).toBe("world");
+      expect(buffer.length()).toBe(5);
+    });
+
+    it("should delete from middle", () => {
+      const buffer = new PieceTable("hello world");
+      buffer.delete(5, 6);
+
+      expect(buffer.toString()).toBe("helloworld");
+      expect(buffer.length()).toBe(10);
+    });
+
+    it("should delete from end", () => {
+      const buffer = new PieceTable("hello world");
+      buffer.delete(5, 11);
+
+      expect(buffer.toString()).toBe("hello");
+      expect(buffer.length()).toBe(5);
+    });
+
+    it("should delete entire content", () => {
+      const buffer = new PieceTable("hello");
+      buffer.delete(0, 5);
+
+      expect(buffer.toString()).toBe("");
+      expect(buffer.length()).toBe(0);
+    });
+  });
 });

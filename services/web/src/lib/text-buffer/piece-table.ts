@@ -100,8 +100,41 @@ export class PieceTable implements TextBuffer {
     this.pieces = newPieces;
   }
 
-  // Stub for remaining method
   delete(start: number, end: number): void {
-    throw new Error("Not implemented");
+    let pos = 0;
+    const newPieces: Piece[] = [];
+
+    for (const piece of this.pieces) {
+      const pieceEnd = pos + piece.length;
+
+      if (pieceEnd <= start || pos >= end) {
+        // Piece is outside deletion range - keep it
+        newPieces.push(piece);
+      } else {
+        // Piece overlaps with deletion range
+        const beforeLen = Math.max(0, start - pos);
+        const afterLen = Math.max(0, pieceEnd - end);
+
+        // Keep part before deletion
+        if (beforeLen > 0) {
+          newPieces.push(new Piece(piece.buffer, piece.start, beforeLen));
+        }
+
+        // Keep part after deletion
+        if (afterLen > 0) {
+          newPieces.push(
+            new Piece(
+              piece.buffer,
+              piece.start + piece.length - afterLen,
+              afterLen
+            )
+          );
+        }
+      }
+
+      pos = pieceEnd;
+    }
+
+    this.pieces = newPieces;
   }
 }
