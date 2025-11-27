@@ -5,16 +5,18 @@ export class PieceTable implements TextBuffer {
   private original: string;
   private add: string;
   private pieces: Piece[];
+  private totalLength: number;
 
   constructor(initial: string) {
     this.original = initial;
     this.add = "";
     this.pieces =
       initial.length > 0 ? [new Piece("original", 0, initial.length)] : [];
+    this.totalLength = initial.length;
   }
 
   length(): number {
-    return this.pieces.reduce((acc, p) => acc + p.length, 0);
+    return this.totalLength;
   }
 
   toString(): string {
@@ -77,6 +79,7 @@ export class PieceTable implements TextBuffer {
     // Append text to add buffer
     const addStart = this.add.length;
     this.add += text;
+    this.totalLength += text.length;
 
     // Find piece containing insertion position
     let index = 0;
@@ -144,6 +147,9 @@ export class PieceTable implements TextBuffer {
     if (end > totalLength) {
       throw new Error("Deletion end index out of bounds");
     }
+
+    const deleted = end - start;
+    this.totalLength -= deleted;
 
     let pos = 0;
     const newPieces: Piece[] = [];

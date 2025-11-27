@@ -25,6 +25,34 @@ describe("PieceTable", () => {
       const buffer = new PieceTable("hello world");
       expect(buffer.length()).toBe(11);
     });
+
+    it("should match expected value after multiple inserts", () => {
+      const buffer = new PieceTable("hello");
+      expect(buffer.length()).toBe(5);
+
+      buffer.insert(5, " world");
+      expect(buffer.length()).toBe(11);
+
+      buffer.insert(0, "Say ");
+      expect(buffer.length()).toBe(15);
+
+      buffer.insert(15, "!");
+      expect(buffer.length()).toBe(16);
+    });
+
+    it("should decrement correctly after deletes", () => {
+      const buffer = new PieceTable("hello world");
+      expect(buffer.length()).toBe(11);
+
+      buffer.delete(5, 11);
+      expect(buffer.length()).toBe(5);
+
+      buffer.delete(0, 2);
+      expect(buffer.length()).toBe(3);
+
+      buffer.delete(0, 3);
+      expect(buffer.length()).toBe(0);
+    });
   });
 
   describe("getSlice()", () => {
