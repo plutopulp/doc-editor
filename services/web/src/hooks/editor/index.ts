@@ -3,3 +3,4 @@ export { useTextState } from "./use-text-state";
 export { usePagination } from "./use-pagination";
 export { useSelectionState } from "./use-selection-state";
 export { useEditorDocument } from "./use-editor-document";
+export { useLayoutOptionsState } from "./use-layout-options-state";

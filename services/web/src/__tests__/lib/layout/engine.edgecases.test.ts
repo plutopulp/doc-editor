@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 
-import { layout } from "@/layout/engine";
+import { layout } from "@/lib/layout/engine";
 import { LayoutOptions } from "@/types/layout";
 
-jest.mock("@/layout/measure", () => ({
+jest.mock("@/lib/layout/measure", () => ({
   measureTextWidth: (text: string, _font: string) => text.length,
 }));
 
@@ -69,4 +69,3 @@ describe("layout edge cases and validation", () => {
     expect(pages[0].end).toBe(text.length);
   });
 });
-

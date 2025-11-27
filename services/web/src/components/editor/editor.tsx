@@ -3,8 +3,12 @@
 import React, { useCallback } from "react";
 import { useEditorDocument } from "@/hooks/editor";
 import { PagePreview } from "./page-preview";
+import { useLayoutOptionsState } from "@/hooks/editor";
+import { LayoutToolbar } from "./layout-toolbar";
 
 export const Editor: React.FC = () => {
+  const { layoutOptions, updateLayoutOptions } = useLayoutOptionsState();
+
   const {
     text,
     pages,
@@ -12,7 +16,7 @@ export const Editor: React.FC = () => {
     buffer,
     handleTextChange,
     handleSelectionChange,
-  } = useEditorDocument("");
+  } = useEditorDocument("", layoutOptions);
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -43,6 +47,11 @@ export const Editor: React.FC = () => {
           Selection: {selection.start} – {selection.end}
         </div>
       </header>
+      {/* Formatting toolbar */}
+      <LayoutToolbar
+        layoutOptions={layoutOptions}
+        onChange={updateLayoutOptions}
+      />
 
       <main className="flex flex-1 overflow-hidden">
         {/* Left: raw text input */}
@@ -50,18 +59,32 @@ export const Editor: React.FC = () => {
           <div className="p-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">
             Source Text
           </div>
+
           <textarea
-            className="flex-1 w-full resize-none p-3 font-mono text-sm border-none outline-none bg-slate-50 focus:bg-white"
+            className="flex-1 w-full resize-none p-3 font-sans border-none outline-none bg-slate-50 focus:bg-white"
+            style={{
+              fontSize: `${layoutOptions.fontSize}px`,
+              lineHeight: `${layoutOptions.lineHeight}px`,
+            }}
             value={text}
             onChange={onChange}
             onSelect={onSelect}
             spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
+            autoComplete="off"
+            data-gramm="false"
+            data-enable-grammarly="false"
           />
         </section>
 
         {/* Right: paginated preview */}
         <section className="flex-1 overflow-auto bg-slate-100">
-          <PagePreview pages={pages} buffer={buffer} />
+          <PagePreview
+            pages={pages}
+            buffer={buffer}
+            layoutOptions={layoutOptions}
+          />
         </section>
       </main>
     </div>

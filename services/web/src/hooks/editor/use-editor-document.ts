@@ -1,33 +1,10 @@
-import { useMemo } from "react";
-
+import { useEffect } from "react";
 import { usePieceTableBuffer } from "./use-piece-table-buffer";
 import { useTextState } from "./use-text-state";
 import { usePagination } from "./use-pagination";
 import { useSelectionState } from "./use-selection-state";
 
-import {
-  PAGE_WIDTH,
-  PAGE_HEIGHT,
-  PAGE_MARGIN_TOP,
-  PAGE_MARGIN_BOTTOM,
-  PAGE_MARGIN_LEFT,
-  PAGE_MARGIN_RIGHT,
-  LINE_HEIGHT,
-  FONT_FAMILY,
-} from "@/layout/constants";
-
-function getDefaultLayoutOptions() {
-  return {
-    pageWidth: PAGE_WIDTH,
-    pageHeight: PAGE_HEIGHT,
-    marginTop: PAGE_MARGIN_TOP,
-    marginBottom: PAGE_MARGIN_BOTTOM,
-    marginLeft: PAGE_MARGIN_LEFT,
-    marginRight: PAGE_MARGIN_RIGHT,
-    lineHeight: LINE_HEIGHT,
-    font: FONT_FAMILY,
-  };
-}
+import { LayoutOptions } from "@/types/layout";
 
 /**
  * useEditorDocument
@@ -57,10 +34,10 @@ function getDefaultLayoutOptions() {
  *   - handleTextChange(nextText): update text + trigger layout + caret update
  *   - handleSelectionChange(start, end): update user selection
  */
-export function useEditorDocument(initialText = "") {
-  // Memoized layout configuration (page size, margins, fonts)
-  const layoutOptions = useMemo(() => getDefaultLayoutOptions(), []);
-
+export function useEditorDocument(
+  initialText = "",
+  layoutOptions: LayoutOptions
+) {
   // Core text buffer: low-level text model with splice-based updates
   const { bufferRef, applyDiff } = usePieceTableBuffer(initialText);
 
@@ -83,6 +60,12 @@ export function useEditorDocument(initialText = "") {
       setCaret(caret);
     }
   );
+
+  // Re-run pagination whenever layout options (including lineHeight) change
+  // so that page breaks stay in sync with the visual layout.
+  useEffect(() => {
+    recomputeLayout(text);
+  }, [layoutOptions, recomputeLayout, text]);
 
   return {
     text,

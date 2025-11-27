@@ -1,5 +1,8 @@
-import { measureTextWidth } from "@/layout/measure";
-import { FONT_FAMILY } from "@/layout/constants";
+/**
+ * @jest-environment jsdom
+ */
+import { measureTextWidth } from "@/lib/layout/measure";
+import { DEFAULT_FONT_FAMILY, DEFAULT_FONT_SIZE } from "@/lib/layout/constants";
 
 // Mock Canvas 2D context since JSDOM doesn't fully support it
 const mockMeasureText = jest.fn((text: string) => ({
@@ -33,19 +36,22 @@ beforeAll(() => {
 
 describe("measureTextWidth", () => {
   it("returns 0 for empty string", () => {
-    expect(measureTextWidth("", FONT_FAMILY)).toBe(0);
+    const font = `${DEFAULT_FONT_SIZE}px ${DEFAULT_FONT_FAMILY}`;
+    expect(measureTextWidth("", font)).toBe(0);
   });
 
   it("returns a non-negative width for non-empty string", () => {
-    const w = measureTextWidth("hello", FONT_FAMILY);
+    const font = `${DEFAULT_FONT_SIZE}px ${DEFAULT_FONT_FAMILY}`;
+    const w = measureTextWidth("hello", font);
     expect(typeof w).toBe("number");
     expect(w).toBeGreaterThanOrEqual(0);
   });
 
   it("caches repeated measurements for same text", () => {
     mockMeasureText.mockClear();
-    const w1 = measureTextWidth("cache-test", FONT_FAMILY);
-    const w2 = measureTextWidth("cache-test", FONT_FAMILY);
+    const font = `${DEFAULT_FONT_SIZE}px ${DEFAULT_FONT_FAMILY}`;
+    const w1 = measureTextWidth("cache-test", font);
+    const w2 = measureTextWidth("cache-test", font);
     expect(w2).toBe(w1);
     // measureText should only be called once due to caching
     expect(mockMeasureText).toHaveBeenCalledTimes(1);

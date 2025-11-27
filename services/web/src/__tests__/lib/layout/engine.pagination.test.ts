@@ -2,11 +2,11 @@
  * @jest-environment jsdom
  */
 
-import { layout } from "@/layout/engine";
+import { layout } from "@/lib/layout/engine";
 import { LayoutOptions } from "@/types/layout";
 
 // Mock measureTextWidth: each character has width 1
-jest.mock("@/layout/measure", () => ({
+jest.mock("@/lib/layout/measure", () => ({
   measureTextWidth: (text: string) => text.length,
 }));
 

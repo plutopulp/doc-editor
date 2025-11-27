@@ -10,7 +10,8 @@ export interface LayoutOptions {
   marginLeft: number;
   marginRight: number;
   lineHeight: number;
-  font: string; // e.g. "16px Arial, sans-serif"
+  fontSize: number;
+  font: string; // e.g. "fontSize px Inter, sans-serif"
 }
 
 /**

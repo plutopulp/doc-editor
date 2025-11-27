@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
-import { layout } from "@/layout/engine";
+import { layout } from "@/lib/layout/engine";
 import type { LayoutOptions, PageSlice } from "@/types/layout";
+import { useDebouncedCallback } from "../use-debounced-callback";
 
 /**
  * usePagination
@@ -23,7 +24,8 @@ import type { LayoutOptions, PageSlice } from "@/types/layout";
  */
 export function usePagination(
   initialText: string,
-  layoutOptions: LayoutOptions
+  layoutOptions: LayoutOptions,
+  debounceDelay: number = 0
 ) {
   // Compute initial page slices from the initial document text
   const initialPages: PageSlice[] =
@@ -34,14 +36,17 @@ export function usePagination(
   // React state storing the current paginated layout
   const [pages, setPages] = useState<PageSlice[]>(initialPages);
 
-  const recomputeLayout = useCallback(
+  const recomputeLayoutImmediate = useCallback(
     (text: string) => {
-      // Run the layout engine to produce updated page slices
       const slices = layout(text, layoutOptions);
-      // Store the new pagination state
       setPages(slices);
     },
     [layoutOptions]
+  );
+
+  const recomputeLayout = useDebouncedCallback(
+    recomputeLayoutImmediate,
+    debounceDelay
   );
 
   return {
