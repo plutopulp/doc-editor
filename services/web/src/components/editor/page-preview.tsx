@@ -19,9 +19,9 @@ const Page: React.FC<PageProps> = ({
   const pageNumber = slice.pageIndex + 1;
 
   return (
-    <div className="bg-white shadow-lg border border-gray-200 rounded-sm m-4 mx-auto">
+    <div className="flex flex-col items-center">
       <div
-        className="flex flex-col"
+        className="bg-white shadow-xl border border-gray-200 rounded-md box-border"
         style={{
           width: layoutOptions.pageWidth,
           height: layoutOptions.pageHeight,
@@ -31,19 +31,19 @@ const Page: React.FC<PageProps> = ({
           paddingRight: layoutOptions.marginRight,
         }}
       >
-        <div className="flex-1 overflow-hidden">
-          <pre
-            className="whitespace-pre-wrap font-sans wrap-break-word"
-            style={{
-              fontSize: `${layoutOptions.fontSize}px`,
-              lineHeight: `${layoutOptions.lineHeight}px`,
-            }}
-          >
-            {text}
-          </pre>
-        </div>
+        <pre
+          className="whitespace-pre-wrap font-sans wrap-break-word"
+          style={{
+            fontSize: `${layoutOptions.fontSize}px`,
+            lineHeight: `${layoutOptions.lineHeight}px`,
+          }}
+        >
+          {text}
+        </pre>
       </div>
-      <div className="pt-2 pb-2 text-center text-xs text-gray-500 shrink-0">
+
+      {/* Footer */}
+      <div className="pt-3 text-center text-xs text-gray-500">
         Page {pageNumber} of {totalPages}
       </div>
     </div>
@@ -64,16 +64,18 @@ export const PagePreview: React.FC<PagePreviewProps> = ({
   const totalPages = pages.length || 1;
 
   return (
-    <div className="flex flex-col items-center justify-start py-8 bg-slate-100 overflow-y-auto">
-      {pages.map((slice) => (
-        <Page
-          key={slice.pageIndex}
-          slice={slice}
-          buffer={buffer.current}
-          totalPages={totalPages}
-          layoutOptions={layoutOptions}
-        />
-      ))}
+    <div className="flex-1 overflow-y-auto bg-slate-100 py-10">
+      <div className="flex flex-col items-center gap-10">
+        {pages.map((slice) => (
+          <Page
+            key={slice.pageIndex}
+            slice={slice}
+            buffer={buffer.current}
+            totalPages={totalPages}
+            layoutOptions={layoutOptions}
+          />
+        ))}
+      </div>
     </div>
   );
 };
