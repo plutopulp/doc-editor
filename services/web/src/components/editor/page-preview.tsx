@@ -36,9 +36,9 @@ const Page: React.FC<PageProps> = ({
             {text}
           </pre>
         </div>
-        <div className="pt-4 text-center text-xs text-gray-500 shrink-0">
-          Page {pageNumber} of {totalPages}
-        </div>
+      </div>
+      <div className="pt-2 pb-2 text-center text-xs text-gray-500 shrink-0">
+        Page {pageNumber} of {totalPages}
       </div>
     </div>
   );

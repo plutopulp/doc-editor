@@ -65,6 +65,11 @@ export const Editor: React.FC = () => {
             onChange={onChange}
             onSelect={onSelect}
             spellCheck={false}
+            autoCorrect="off"
+            autoCapitalize="off"
+            autoComplete="off"
+            data-gramm="false"
+            data-enable-grammarly="false"
           />
         </section>
 
