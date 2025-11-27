@@ -272,6 +272,18 @@ describe("PieceTable", () => {
           "Start index must be <= end index"
         );
       });
+
+      it("should throw error when deleting past end", () => {
+        expect(() => buffer.delete(0, 20)).toThrow(
+          "Deletion end index out of bounds"
+        );
+      });
+
+      it("should throw error when deleting from index > length", () => {
+        expect(() => buffer.delete(20, 25)).toThrow(
+          "Deletion start index out of bounds"
+        );
+      });
     });
   });
 });

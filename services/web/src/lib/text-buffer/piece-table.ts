@@ -135,6 +135,16 @@ export class PieceTable implements TextBuffer {
       throw new Error("Start index must be <= end index");
     }
 
+    const totalLength = this.length();
+
+    if (start > totalLength) {
+      throw new Error("Deletion start index out of bounds");
+    }
+
+    if (end > totalLength) {
+      throw new Error("Deletion end index out of bounds");
+    }
+
     let pos = 0;
     const newPieces: Piece[] = [];
 
