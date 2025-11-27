@@ -22,6 +22,7 @@ export class PieceTable implements TextBuffer {
   }
 
   getSlice(start: number, end: number): string {
+    const totalLength = this.length();
     if (start < 0) {
       throw new Error("Start index must be non-negative");
     }
@@ -31,8 +32,11 @@ export class PieceTable implements TextBuffer {
     if (start > end) {
       throw new Error("Start index must be <= end index");
     }
-    if (start > this.length()) {
+    if (start > totalLength) {
       throw new Error("Start index out of bounds");
+    }
+    if (end > totalLength) {
+      throw new Error("Slice end index out of bounds");
     }
 
     let result = "";

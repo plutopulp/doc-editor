@@ -206,6 +206,21 @@ describe("PieceTable", () => {
           "Start index out of bounds"
         );
       });
+
+      it("should throw error when end > length", () => {
+        expect(() => buffer.getSlice(0, 10)).toThrow(
+          "Slice end index out of bounds"
+        );
+      });
+    });
+
+    describe("getSlice() on empty buffer", () => {
+      it("should throw error when end > length on empty buffer", () => {
+        const buffer = new PieceTable("");
+        expect(() => buffer.getSlice(0, 1)).toThrow(
+          "Slice end index out of bounds"
+        );
+      });
     });
 
     describe("insert()", () => {
