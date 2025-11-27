@@ -65,4 +65,47 @@ describe("PieceTable", () => {
       expect(buffer.toString()).toBe("hello world");
     });
   });
+
+  describe("insert()", () => {
+    it("should insert into empty buffer", () => {
+      const buffer = new PieceTable("");
+      buffer.insert(0, "test");
+
+      expect(buffer.toString()).toBe("test");
+      expect(buffer.length()).toBe(4);
+    });
+
+    it("should insert at start", () => {
+      const buffer = new PieceTable("world");
+      buffer.insert(0, "hello ");
+
+      expect(buffer.toString()).toBe("hello world");
+      expect(buffer.length()).toBe(11);
+    });
+
+    it("should insert at middle", () => {
+      const buffer = new PieceTable("helo");
+      buffer.insert(3, "l");
+
+      expect(buffer.toString()).toBe("hello");
+      expect(buffer.length()).toBe(5);
+    });
+
+    it("should insert at end", () => {
+      const buffer = new PieceTable("hello");
+      buffer.insert(5, " world");
+
+      expect(buffer.toString()).toBe("hello world");
+      expect(buffer.length()).toBe(11);
+    });
+
+    it("should handle multiple sequential inserts", () => {
+      const buffer = new PieceTable("ac");
+      buffer.insert(1, "b");
+      buffer.insert(3, "d");
+
+      expect(buffer.toString()).toBe("abcd");
+      expect(buffer.length()).toBe(4);
+    });
+  });
 });
