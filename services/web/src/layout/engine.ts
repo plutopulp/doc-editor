@@ -7,7 +7,7 @@ import {
   PAGE_MARGIN_RIGHT,
   LINE_HEIGHT,
   FONT_FAMILY,
-  //   MAX_PAGES,
+  MAX_PAGES,
 } from "@/layout/constants";
 import { measureTextWidth } from "@/layout/measure";
 import { LayoutOptions, PageSlice } from "@/types/layout";
@@ -40,6 +40,12 @@ export function layout(
   }
 
   const maxWidth = opts.pageWidth - opts.marginLeft - opts.marginRight;
+  const maxLinesPerPage = Math.max(
+    1,
+    Math.floor(
+      (opts.pageHeight - opts.marginTop - opts.marginBottom) / opts.lineHeight
+    )
+  );
 
   // Edge case: empty text => 1 empty page
   if (text.length === 0) {
@@ -49,31 +55,58 @@ export function layout(
   const tokens = tokenize(text);
   const pages: PageSlice[] = [];
 
-  const pageIndex = 0;
-  const pageStart = 0;
-  let charIndex = 0;
+  let pageIndex = 0;
+  let pageStart = 0; // char offset where current page begins
+  let charIndex = 0; // char offset in full text
   let lineWidth = 0;
+  let linesInPage = 0;
 
   for (const token of tokens) {
     if (token === "\n") {
       // newline: force line break
       lineWidth = 0;
+      linesInPage++;
       charIndex += 1; // newline is a single char in original text
+
+      if (linesInPage >= maxLinesPerPage) {
+        pages.push({ pageIndex, start: pageStart, end: charIndex });
+        if (pages.length >= MAX_PAGES) break; // avoid runaway in pathological cases
+        pageIndex++;
+        pageStart = charIndex;
+        linesInPage = 0;
+      }
       continue;
     }
 
     const width = measureTextWidth(token, opts.font);
     const tokenLength = token.length;
 
-    if (lineWidth > 0 && lineWidth + width > maxWidth) {
-      // start a new line, but still on same page (for this step)
+    // If token alone exceeds maxWidth, treat it as a full line
+    const shouldForceNewLine = lineWidth > 0 && lineWidth + width > maxWidth;
+
+    if (shouldForceNewLine) {
       lineWidth = 0;
+      linesInPage++;
+      if (linesInPage >= maxLinesPerPage) {
+        pages.push({ pageIndex, start: pageStart, end: charIndex });
+        if (pages.length >= MAX_PAGES) break;
+        pageIndex++;
+        pageStart = charIndex;
+        linesInPage = 0;
+      }
     }
 
+    // Place token on current line
+    // If token is extremely long (> maxWidth) and lineWidth === 0,
+    // we still place it; it will visually overflow but remain deterministic.
     lineWidth += width;
     charIndex += tokenLength;
   }
 
-  pages.push({ pageIndex, start: pageStart, end: charIndex });
+  // Push last page if we haven't exceeded MAX_PAGES
+  if (pages.length === 0 || pages[pages.length - 1].end !== charIndex) {
+    pages.push({ pageIndex, start: pageStart, end: charIndex });
+  }
+
   return pages;
 }
