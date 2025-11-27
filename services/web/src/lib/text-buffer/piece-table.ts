@@ -19,6 +19,10 @@ export class PieceTable implements TextBuffer {
     return this.totalLength;
   }
 
+  getPieceCount(): number {
+    return this.pieces.length;
+  }
+
   toString(): string {
     return this.getSlice(0, this.length());
   }
@@ -125,6 +129,7 @@ export class PieceTable implements TextBuffer {
     }
 
     this.pieces = newPieces;
+    this.coalesce();
   }
 
   delete(start: number, end: number): void {
@@ -186,5 +191,30 @@ export class PieceTable implements TextBuffer {
     }
 
     this.pieces = newPieces;
+    this.coalesce();
+  }
+
+  private coalesce(): void {
+    const merged: Piece[] = [];
+
+    for (const p of this.pieces) {
+      const last = merged[merged.length - 1];
+
+      if (
+        last &&
+        last.buffer === p.buffer &&
+        last.start + last.length === p.start
+      ) {
+        merged[merged.length - 1] = new Piece(
+          last.buffer,
+          last.start,
+          last.length + p.length
+        );
+      } else {
+        merged.push(new Piece(p.buffer, p.start, p.length));
+      }
+    }
+
+    this.pieces = merged;
   }
 }

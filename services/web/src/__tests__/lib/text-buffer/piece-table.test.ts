@@ -171,6 +171,21 @@ describe("PieceTable", () => {
     });
   });
 
+  describe("coalescing", () => {
+    it("should coalesce adjacent pieces after multiple inserts in same region", () => {
+      const buffer = new PieceTable("hello");
+      expect(buffer.getPieceCount()).toBe(1); // initial piece
+
+      buffer.insert(5, "X");
+      expect(buffer.getPieceCount()).toBe(2); // original + add
+
+      buffer.insert(6, "Y");
+      // After coalescing, the two adjacent add pieces should merge
+      expect(buffer.getPieceCount()).toBe(2); // original + merged add
+      expect(buffer.toString()).toBe("helloXY");
+    });
+  });
+
   describe("more complex scenarios", () => {
     it("should handle insert after delete", () => {
       const buffer = new PieceTable("hello world");
