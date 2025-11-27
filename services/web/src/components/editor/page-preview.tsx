@@ -23,7 +23,7 @@ const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
   const pageNumber = slice.pageIndex + 1;
 
   return (
-    <div className="bg-white shadow-md border border-gray-300 m-4 mx-auto">
+    <div className="bg-white shadow-lg border border-gray-200 rounded-sm m-4 mx-auto">
       <div
         className="flex flex-col"
         style={{
@@ -40,7 +40,7 @@ const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
             {text}
           </pre>
         </div>
-        <div className="pt-4 text-center text-xs text-gray-500">
+        <div className="pt-4 text-center text-xs text-gray-500 shrink-0">
           Page {pageNumber} of {totalPages}
         </div>
       </div>
@@ -57,7 +57,7 @@ export const PagePreview: React.FC<PagePreviewProps> = ({ pages, buffer }) => {
   const totalPages = pages.length || 1;
 
   return (
-    <div className="flex flex-col items-center justify-center py-8 bg-slate-100">
+    <div className="flex flex-col items-center justify-start py-8 bg-slate-100 overflow-y-auto">
       {pages.map((slice) => (
         <Page
           key={slice.pageIndex}
