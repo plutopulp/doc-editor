@@ -1,24 +1,20 @@
-"use client";
-
 import React, { RefObject } from "react";
 import type { TextBuffer } from "@/types/text-buffer";
-import type { PageSlice } from "@/types/layout";
-import {
-  PAGE_WIDTH,
-  PAGE_HEIGHT,
-  PAGE_MARGIN_TOP,
-  PAGE_MARGIN_RIGHT,
-  PAGE_MARGIN_LEFT,
-  PAGE_MARGIN_BOTTOM,
-} from "@/lib/layout/constants";
+import type { LayoutOptions, PageSlice } from "@/types/layout";
 
 type PageProps = {
   slice: PageSlice;
   buffer: TextBuffer;
   totalPages: number;
+  layoutOptions: LayoutOptions;
 };
 
-const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
+const Page: React.FC<PageProps> = ({
+  slice,
+  buffer,
+  totalPages,
+  layoutOptions,
+}) => {
   const text = buffer.getSlice(slice.start, slice.end);
   const pageNumber = slice.pageIndex + 1;
 
@@ -27,12 +23,12 @@ const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
       <div
         className="flex flex-col"
         style={{
-          width: PAGE_WIDTH,
-          height: PAGE_HEIGHT,
-          paddingTop: PAGE_MARGIN_TOP,
-          paddingBottom: PAGE_MARGIN_BOTTOM,
-          paddingLeft: PAGE_MARGIN_LEFT,
-          paddingRight: PAGE_MARGIN_RIGHT,
+          width: layoutOptions.pageWidth,
+          height: layoutOptions.pageHeight,
+          paddingTop: layoutOptions.marginTop,
+          paddingBottom: layoutOptions.marginBottom,
+          paddingLeft: layoutOptions.marginLeft,
+          paddingRight: layoutOptions.marginRight,
         }}
       >
         <div className="flex-1 overflow-hidden">
@@ -51,9 +47,14 @@ const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
 type PagePreviewProps = {
   pages: PageSlice[];
   buffer: RefObject<TextBuffer>;
+  layoutOptions: LayoutOptions;
 };
 
-export const PagePreview: React.FC<PagePreviewProps> = ({ pages, buffer }) => {
+export const PagePreview: React.FC<PagePreviewProps> = ({
+  pages,
+  buffer,
+  layoutOptions,
+}) => {
   const totalPages = pages.length || 1;
 
   return (
@@ -64,6 +65,7 @@ export const PagePreview: React.FC<PagePreviewProps> = ({ pages, buffer }) => {
           slice={slice}
           buffer={buffer.current}
           totalPages={totalPages}
+          layoutOptions={layoutOptions}
         />
       ))}
     </div>

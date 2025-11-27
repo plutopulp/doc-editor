@@ -3,8 +3,12 @@
 import React, { useCallback } from "react";
 import { useEditorDocument } from "@/hooks/editor";
 import { PagePreview } from "./page-preview";
+import { useLayoutOptionsState } from "@/hooks/editor";
+import { LayoutToolbar } from "./layout-toolbar";
 
 export const Editor: React.FC = () => {
+  const { layoutOptions, updateLayoutOptions } = useLayoutOptionsState();
+
   const {
     text,
     pages,
@@ -12,7 +16,7 @@ export const Editor: React.FC = () => {
     buffer,
     handleTextChange,
     handleSelectionChange,
-  } = useEditorDocument("");
+  } = useEditorDocument("", layoutOptions);
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -43,6 +47,11 @@ export const Editor: React.FC = () => {
           Selection: {selection.start} – {selection.end}
         </div>
       </header>
+      {/* Formatting toolbar */}
+      <LayoutToolbar
+        layoutOptions={layoutOptions}
+        onChange={updateLayoutOptions}
+      />
 
       <main className="flex flex-1 overflow-hidden">
         {/* Left: raw text input */}
@@ -61,7 +70,11 @@ export const Editor: React.FC = () => {
 
         {/* Right: paginated preview */}
         <section className="flex-1 overflow-auto bg-slate-100">
-          <PagePreview pages={pages} buffer={buffer} />
+          <PagePreview
+            pages={pages}
+            buffer={buffer}
+            layoutOptions={layoutOptions}
+          />
         </section>
       </main>
     </div>
