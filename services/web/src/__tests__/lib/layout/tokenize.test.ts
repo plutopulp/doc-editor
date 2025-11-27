@@ -1,4 +1,4 @@
-import { tokenize } from "@/layout/tokenize";
+import { tokenize } from "@/lib/layout/tokenize";
 
 describe("tokenize", () => {
   it("returns empty array for empty string", () => {

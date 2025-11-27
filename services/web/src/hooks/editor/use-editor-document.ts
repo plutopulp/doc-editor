@@ -14,7 +14,7 @@ import {
   PAGE_MARGIN_RIGHT,
   LINE_HEIGHT,
   FONT_FAMILY,
-} from "@/layout/constants";
+} from "@/lib/layout/constants";
 
 function getDefaultLayoutOptions() {
   return {

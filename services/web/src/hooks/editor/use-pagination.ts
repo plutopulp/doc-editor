@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { layout } from "@/layout/engine";
+import { layout } from "@/lib/layout/engine";
 import type { LayoutOptions, PageSlice } from "@/types/layout";
 import { useDebouncedCallback } from "../use-debounced-callback";
 

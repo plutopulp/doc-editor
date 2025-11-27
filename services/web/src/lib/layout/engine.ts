@@ -8,10 +8,10 @@ import {
   LINE_HEIGHT,
   FONT_FAMILY,
   MAX_PAGES,
-} from "@/layout/constants";
-import { measureTextWidth } from "@/layout/measure";
+} from "./constants";
+import { measureTextWidth } from "./measure";
 import { LayoutOptions, PageSlice } from "@/types/layout";
-import { tokenize } from "@/layout/tokenize";
+import { tokenize } from "./tokenize";
 
 export function layout(
   text: string,

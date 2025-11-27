@@ -1,5 +1,8 @@
-import { measureTextWidth } from "@/layout/measure";
-import { FONT_FAMILY } from "@/layout/constants";
+/**
+ * @jest-environment jsdom
+ */
+import { measureTextWidth } from "@/lib/layout/measure";
+import { FONT_FAMILY } from "@/lib/layout/constants";
 
 // Mock Canvas 2D context since JSDOM doesn't fully support it
 const mockMeasureText = jest.fn((text: string) => ({
