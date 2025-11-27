@@ -78,7 +78,7 @@ export function layout(
       continue;
     }
 
-    const width = measureTextWidth(token, opts.font);
+    const width = measureTextWidth(token);
     const tokenLength = token.length;
 
     // If token alone exceeds maxWidth, treat it as a full line

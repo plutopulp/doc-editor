@@ -1,3 +1,5 @@
+import { EDITOR_CANVAS_FONT } from "./typography";
+
 /****
  * SSR GUARD:
  * This module may be imported during Next.js server-side rendering.
@@ -31,7 +33,10 @@ export function ensureContext(font: string): void {
   }
 }
 
-export function measureTextWidth(text: string, font: string): number {
+export function measureTextWidth(
+  text: string,
+  font: string = EDITOR_CANVAS_FONT
+): number {
   // --- SSR fallback ---
   if (typeof window === "undefined") {
     return measureTextWidthSSR(text);

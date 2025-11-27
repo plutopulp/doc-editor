@@ -18,7 +18,7 @@ const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
     <div className="bg-white shadow-md border border-gray-300 m-4 mx-auto">
       <div className="w-[794px] h-[1123px] p-10 flex flex-col">
         <div className="flex-1 overflow-hidden">
-          <pre className="whitespace-pre-wrap font-sans text-sm leading-[1.25rem]">
+          <pre className="whitespace-pre-wrap font-sans text-[16px] leading-[20px]">
             {text}
           </pre>
         </div>
