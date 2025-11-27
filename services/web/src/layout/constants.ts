@@ -1,0 +1,9 @@
+export const PAGE_WIDTH = 794; // px (A4 portrait content area)
+export const PAGE_HEIGHT = 1123; // px (A4 portrait content area)
+export const PAGE_MARGIN_TOP = 40;
+export const PAGE_MARGIN_BOTTOM = 40;
+export const PAGE_MARGIN_LEFT = 40;
+export const PAGE_MARGIN_RIGHT = 40;
+export const LINE_HEIGHT = 20; // px – adjust based on font size
+export const FONT_FAMILY = "16px Arial, sans-serif"; // Canvas font string
+export const MAX_PAGES = 200; // safety limit to prevent infinite looping
