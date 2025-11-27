@@ -3,6 +3,14 @@
 import React, { RefObject } from "react";
 import type { TextBuffer } from "@/types/text-buffer";
 import type { PageSlice } from "@/types/layout";
+import {
+  PAGE_WIDTH,
+  PAGE_HEIGHT,
+  PAGE_MARGIN_TOP,
+  PAGE_MARGIN_RIGHT,
+  PAGE_MARGIN_LEFT,
+  PAGE_MARGIN_BOTTOM,
+} from "@/lib/layout/constants";
 
 type PageProps = {
   slice: PageSlice;
@@ -16,7 +24,17 @@ const Page: React.FC<PageProps> = ({ slice, buffer, totalPages }) => {
 
   return (
     <div className="bg-white shadow-md border border-gray-300 m-4 mx-auto">
-      <div className="w-[794px] h-[1123px] p-10 flex flex-col">
+      <div
+        className="flex flex-col"
+        style={{
+          width: PAGE_WIDTH,
+          height: PAGE_HEIGHT,
+          paddingTop: PAGE_MARGIN_TOP,
+          paddingBottom: PAGE_MARGIN_BOTTOM,
+          paddingLeft: PAGE_MARGIN_LEFT,
+          paddingRight: PAGE_MARGIN_RIGHT,
+        }}
+      >
         <div className="flex-1 overflow-hidden">
           <pre className="whitespace-pre-wrap font-sans text-[16px] leading-[20px]">
             {text}
