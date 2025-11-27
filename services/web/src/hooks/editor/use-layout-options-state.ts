@@ -1,25 +1,27 @@
 import { useState, useCallback } from "react";
 import type { LayoutOptions } from "@/types/layout";
 import {
-  PAGE_WIDTH,
-  PAGE_HEIGHT,
-  PAGE_MARGIN_TOP,
-  PAGE_MARGIN_BOTTOM,
-  PAGE_MARGIN_LEFT,
-  PAGE_MARGIN_RIGHT,
-  LINE_HEIGHT,
-  FONT_FAMILY,
+  DEFAULT_PAGE_WIDTH,
+  DEFAULT_PAGE_HEIGHT,
+  DEFAULT_PAGE_MARGIN_TOP,
+  DEFAULT_PAGE_MARGIN_BOTTOM,
+  DEFAULT_PAGE_MARGIN_LEFT,
+  DEFAULT_PAGE_MARGIN_RIGHT,
+  DEFAULT_LINE_HEIGHT,
+  DEFAULT_FONT_FAMILY,
+  DEFAULT_FONT_SIZE,
 } from "@/lib/layout/constants";
 
 const DEFAULT_LAYOUT_OPTIONS: LayoutOptions = {
-  pageWidth: PAGE_WIDTH,
-  pageHeight: PAGE_HEIGHT,
-  marginTop: PAGE_MARGIN_TOP,
-  marginBottom: PAGE_MARGIN_BOTTOM,
-  marginLeft: PAGE_MARGIN_LEFT,
-  marginRight: PAGE_MARGIN_RIGHT,
-  lineHeight: LINE_HEIGHT,
-  font: FONT_FAMILY,
+  pageWidth: DEFAULT_PAGE_WIDTH,
+  pageHeight: DEFAULT_PAGE_HEIGHT,
+  marginTop: DEFAULT_PAGE_MARGIN_TOP,
+  marginBottom: DEFAULT_PAGE_MARGIN_BOTTOM,
+  marginLeft: DEFAULT_PAGE_MARGIN_LEFT,
+  marginRight: DEFAULT_PAGE_MARGIN_RIGHT,
+  lineHeight: DEFAULT_LINE_HEIGHT,
+  font: DEFAULT_FONT_FAMILY,
+  fontSize: DEFAULT_FONT_SIZE,
 };
 
 /**

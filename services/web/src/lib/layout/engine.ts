@@ -1,12 +1,13 @@
 import {
-  PAGE_WIDTH,
-  PAGE_HEIGHT,
-  PAGE_MARGIN_TOP,
-  PAGE_MARGIN_BOTTOM,
-  PAGE_MARGIN_LEFT,
-  PAGE_MARGIN_RIGHT,
-  LINE_HEIGHT,
-  FONT_FAMILY,
+  DEFAULT_PAGE_WIDTH,
+  DEFAULT_PAGE_HEIGHT,
+  DEFAULT_PAGE_MARGIN_TOP,
+  DEFAULT_PAGE_MARGIN_BOTTOM,
+  DEFAULT_PAGE_MARGIN_LEFT,
+  DEFAULT_PAGE_MARGIN_RIGHT,
+  DEFAULT_LINE_HEIGHT,
+  DEFAULT_FONT_FAMILY,
+  DEFAULT_FONT_SIZE,
   MAX_PAGES,
 } from "./constants";
 import { measureTextWidth } from "./measure";
@@ -18,14 +19,15 @@ export function layout(
   options?: Partial<LayoutOptions>
 ): PageSlice[] {
   const opts: LayoutOptions = {
-    pageWidth: options?.pageWidth ?? PAGE_WIDTH,
-    pageHeight: options?.pageHeight ?? PAGE_HEIGHT,
-    marginTop: options?.marginTop ?? PAGE_MARGIN_TOP,
-    marginBottom: options?.marginBottom ?? PAGE_MARGIN_BOTTOM,
-    marginLeft: options?.marginLeft ?? PAGE_MARGIN_LEFT,
-    marginRight: options?.marginRight ?? PAGE_MARGIN_RIGHT,
-    lineHeight: options?.lineHeight ?? LINE_HEIGHT,
-    font: options?.font ?? FONT_FAMILY,
+    pageWidth: options?.pageWidth ?? DEFAULT_PAGE_WIDTH,
+    pageHeight: options?.pageHeight ?? DEFAULT_PAGE_HEIGHT,
+    marginTop: options?.marginTop ?? DEFAULT_PAGE_MARGIN_TOP,
+    marginBottom: options?.marginBottom ?? DEFAULT_PAGE_MARGIN_BOTTOM,
+    marginLeft: options?.marginLeft ?? DEFAULT_PAGE_MARGIN_LEFT,
+    marginRight: options?.marginRight ?? DEFAULT_PAGE_MARGIN_RIGHT,
+    lineHeight: options?.lineHeight ?? DEFAULT_LINE_HEIGHT,
+    font: options?.font ?? DEFAULT_FONT_FAMILY,
+    fontSize: options?.fontSize ?? DEFAULT_FONT_SIZE,
   };
 
   // Basic validation
@@ -78,7 +80,8 @@ export function layout(
       continue;
     }
 
-    const width = measureTextWidth(token);
+    const font = `${opts.fontSize}px ${opts.font}`;
+    const width = measureTextWidth(token, font);
     const tokenLength = token.length;
 
     // If token alone exceeds maxWidth, treat it as a full line

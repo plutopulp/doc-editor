@@ -1,18 +1,14 @@
-// Single source of truth for editor typography.
-// These values must match:
-// - canvas context font
-// - layout constants (LINE_HEIGHT)
-// - textarea + page preview styles
+// Typography helpers built from layout defaults.
+// These are derived values only; all primitives live in `constants.ts`.
 
-export const EDITOR_FONT_SIZE_PX = 16; // font size in px
-export const EDITOR_LINE_HEIGHT_PX = 20; // line height in px
+import {
+  DEFAULT_FONT_SIZE,
+  DEFAULT_LINE_HEIGHT,
+  DEFAULT_FONT_FAMILY,
+} from "./constants";
 
 // Line-height as a unitless multiple (Tailwind / CSS-friendly)
-export const EDITOR_LINE_HEIGHT = EDITOR_LINE_HEIGHT_PX / EDITOR_FONT_SIZE_PX;
+export const EDITOR_LINE_HEIGHT = DEFAULT_LINE_HEIGHT / DEFAULT_FONT_SIZE;
 
 // Font family string used by canvas and layout engine
-export const EDITOR_FONT_FAMILY =
-  'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
-
-// Full CSS font string used by canvas 2D context
-export const EDITOR_CANVAS_FONT = `${EDITOR_FONT_SIZE_PX}px ${EDITOR_FONT_FAMILY}`;
+export const EDITOR_FONT_FAMILY = DEFAULT_FONT_FAMILY;

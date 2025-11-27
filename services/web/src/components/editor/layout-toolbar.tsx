@@ -19,6 +19,7 @@ const TOOLBAR_FIELDS: ToolbarFieldConfig[] = [
   { label: "Bottom", field: "marginBottom", inputWidth: "w-14" },
   { label: "Left", field: "marginLeft", inputWidth: "w-14" },
   { label: "Right", field: "marginRight", inputWidth: "w-14" },
+  { label: "Font size", field: "fontSize", inputWidth: "w-14" },
 ];
 
 /**

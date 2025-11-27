@@ -59,8 +59,13 @@ export const Editor: React.FC = () => {
           <div className="p-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">
             Source Text
           </div>
+
           <textarea
-            className="flex-1 w-full resize-none p-3 font-sans text-[16px] leading-[20px] border-none outline-none bg-slate-50 focus:bg-white"
+            className="flex-1 w-full resize-none p-3 font-sans border-none outline-none bg-slate-50 focus:bg-white"
+            style={{
+              fontSize: `${layoutOptions.fontSize}px`,
+              lineHeight: `${layoutOptions.lineHeight}px`,
+            }}
             value={text}
             onChange={onChange}
             onSelect={onSelect}

@@ -32,7 +32,13 @@ const Page: React.FC<PageProps> = ({
         }}
       >
         <div className="flex-1 overflow-hidden">
-          <pre className="whitespace-pre-wrap font-sans text-[16px] leading-[20px]">
+          <pre
+            className="whitespace-pre-wrap font-sans"
+            style={{
+              fontSize: `${layoutOptions.fontSize}px`,
+              lineHeight: `${layoutOptions.lineHeight}px`,
+            }}
+          >
             {text}
           </pre>
         </div>
