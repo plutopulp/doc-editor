@@ -21,11 +21,35 @@ export class PieceTable implements TextBuffer {
     return this.getSlice(0, this.length());
   }
 
-  // Stubs for remaining methods
   getSlice(start: number, end: number): string {
-    throw new Error("Not implemented");
+    let result = "";
+    let pos = 0;
+
+    for (const p of this.pieces) {
+      // Skip pieces before the range
+      if (pos + p.length <= start) {
+        pos += p.length;
+        continue;
+      }
+
+      // Stop if we've passed the range
+      if (pos >= end) break;
+
+      // Calculate slice within this piece
+      const sliceStart = Math.max(0, start - pos);
+      const sliceEnd = Math.min(p.length, end - pos);
+
+      // Get the appropriate buffer and extract substring
+      const buffer = p.buffer === "original" ? this.original : this.add;
+      result += buffer.substring(p.start + sliceStart, p.start + sliceEnd);
+
+      pos += p.length;
+    }
+
+    return result;
   }
 
+  // Stubs for remaining methods
   insert(pos: number, text: string): void {
     throw new Error("Not implemented");
   }
