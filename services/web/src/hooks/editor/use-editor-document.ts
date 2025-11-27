@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { usePieceTableBuffer } from "./use-piece-table-buffer";
 import { useTextState } from "./use-text-state";
 import { usePagination } from "./use-pagination";
@@ -59,6 +60,12 @@ export function useEditorDocument(
       setCaret(caret);
     }
   );
+
+  // Re-run pagination whenever layout options (including lineHeight) change
+  // so that page breaks stay in sync with the visual layout.
+  useEffect(() => {
+    recomputeLayout(text);
+  }, [layoutOptions, recomputeLayout, text]);
 
   return {
     text,

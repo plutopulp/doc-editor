@@ -25,7 +25,7 @@ import { useDebouncedCallback } from "../use-debounced-callback";
 export function usePagination(
   initialText: string,
   layoutOptions: LayoutOptions,
-  debounceDelay: number = 60
+  debounceDelay: number = 0
 ) {
   // Compute initial page slices from the initial document text
   const initialPages: PageSlice[] =
