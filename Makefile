@@ -1,12 +1,11 @@
 DC_FILEPATH := docker/docker-compose.yml
 DC := docker compose -f $(DC_FILEPATH)
-DC_SERVICES := web
 
 # Helper variables for environment selection
 ifeq ($(ENV),dev)
-	DC_SERVICES = web-dev
+	DC_SERVICES = api web-dev
 else
-	DC_SERVICES = web
+	DC_SERVICES = api web
 endif
 
 .PHONY: help build rebuild start stop restart ps logs
