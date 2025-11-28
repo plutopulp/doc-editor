@@ -1,4 +1,9 @@
-from .document import DocumentCreate, DocumentResponse, DocumentSummary
+from .document import (
+    DocumentCreate,
+    DocumentResponse,
+    DocumentSummary,
+    DocumentUpdate,
+)
 from .utils import HealthResponse
 
 __all__ = [
@@ -6,4 +11,5 @@ __all__ = [
     "DocumentCreate",
     "DocumentResponse",
     "DocumentSummary",
+    "DocumentUpdate",
 ]

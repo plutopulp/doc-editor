@@ -24,6 +24,17 @@ export const DocumentCreateSchema = z.object({
 export type DocumentCreate = z.infer<typeof DocumentCreateSchema>;
 
 /**
+ * Schema for updating an existing document
+ * Both fields are optional to allow partial updates
+ */
+export const DocumentUpdateSchema = z.object({
+  title: z.string().optional(),
+  content: z.string().optional(),
+});
+
+export type DocumentUpdate = z.infer<typeof DocumentUpdateSchema>;
+
+/**
  * Schema for full document response
  */
 export const DocumentResponseSchema = z.object({

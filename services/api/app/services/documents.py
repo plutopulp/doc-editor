@@ -2,7 +2,13 @@ import typing as t
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from app.schemas import DocumentCreate, DocumentResponse, DocumentSummary
+from app.core.exceptions import DocumentNotFound
+from app.schemas import (
+    DocumentCreate,
+    DocumentResponse,
+    DocumentSummary,
+    DocumentUpdate,
+)
 from app.storage.file_storage import DocumentStorage
 
 
@@ -46,6 +52,30 @@ class DocumentService:
         """
         items = self._storage.list()
         return [DocumentSummary.model_validate(item) for item in items]
+
+    def update_document(
+        self, document_id: str, data: DocumentUpdate
+    ) -> DocumentResponse:
+        """
+        Update an existing document with new title and/or content.
+        Only provided fields are updated.
+        """
+        # Load existing document
+        stored = self._storage.load(document_id)
+
+        # Update only provided fields
+        if data.title is not None:
+            stored["title"] = data.title
+        if data.content is not None:
+            stored["content"] = data.content
+
+        # Update timestamp
+        stored["updated_at"] = datetime.now(timezone.utc).isoformat()
+
+        # Save back to storage
+        updated = self._storage.save(stored)
+
+        return DocumentResponse.model_validate(updated)
 
     def _generate_id(self) -> str:
         """

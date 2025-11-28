@@ -4,6 +4,7 @@ import type { LayoutOptions } from "@/types/layout";
 type LayoutToolbarProps = {
   layoutOptions: LayoutOptions;
   onChange: (patch: Partial<LayoutOptions>) => void;
+  selection: { start: number; end: number };
 };
 
 type ToolbarFieldConfig = {
@@ -72,6 +73,7 @@ const TOOLBAR_FIELDS: ToolbarFieldConfig[] = [
 export const LayoutToolbar: React.FC<LayoutToolbarProps> = ({
   layoutOptions,
   onChange,
+  selection,
 }) => {
   function handleSelectChange(field: keyof LayoutOptions) {
     return (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -81,26 +83,32 @@ export const LayoutToolbar: React.FC<LayoutToolbarProps> = ({
   }
 
   return (
-    <div className="w-full border-b border-slate-200 bg-white px-4 py-2 flex flex-wrap gap-4 items-center text-xs">
-      <span className="font-semibold text-slate-700 mr-2">Page layout</span>
+    <div className="w-full border-b border-slate-200 bg-white px-4 py-2 flex flex-wrap gap-4 items-center justify-between text-xs">
+      <div className="flex flex-wrap gap-4 items-center">
+        <span className="font-semibold text-slate-700 mr-2">Page layout</span>
 
-      {TOOLBAR_FIELDS.map(({ label, field, inputWidth, options }) => (
-        <label key={field} className="flex items-center gap-1">
-          <span className="text-slate-500">{label}</span>
+        {TOOLBAR_FIELDS.map(({ label, field, inputWidth, options }) => (
+          <label key={field} className="flex items-center gap-1">
+            <span className="text-slate-500">{label}</span>
 
-          <select
-            className={`${inputWidth} border border-slate-200 rounded px-1 py-0.5 text-[11px] bg-white`}
-            value={layoutOptions[field] as number}
-            onChange={handleSelectChange(field)}
-          >
-            {options.map((value) => (
-              <option key={value} value={value}>
-                {value}px
-              </option>
-            ))}
-          </select>
-        </label>
-      ))}
+            <select
+              className={`${inputWidth} border border-slate-200 rounded px-1 py-0.5 text-[11px] bg-white`}
+              value={layoutOptions[field] as number}
+              onChange={handleSelectChange(field)}
+            >
+              {options.map((value) => (
+                <option key={value} value={value}>
+                  {value}px
+                </option>
+              ))}
+            </select>
+          </label>
+        ))}
+      </div>
+
+      <div className="text-slate-500">
+        Selection: {selection.start} – {selection.end}
+      </div>
     </div>
   );
 };
