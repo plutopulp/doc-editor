@@ -2,7 +2,6 @@ import typing as t
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from app.core.exceptions import DocumentNotFound
 from app.schemas import (
     DocumentCreate,
     DocumentResponse,
