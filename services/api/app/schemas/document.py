@@ -36,6 +36,16 @@ class DocumentCreate(DocumentBase):
     pass
 
 
+class DocumentUpdate(BaseModel):
+    """
+    Payload for updating an existing document.
+    Both fields are optional to allow partial updates.
+    """
+
+    title: str | None = Field(None, description="Updated document title")
+    content: str | None = Field(None, description="Updated document content")
+
+
 class DocumentResponse(DocumentBase, TimestampMixin):
     """
     Full document representation returned by the API.

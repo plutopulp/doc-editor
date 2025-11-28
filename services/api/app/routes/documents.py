@@ -2,7 +2,12 @@ from fastapi import APIRouter, Depends, Path, status
 
 from app.core import DocumentNotFound, StorageError, get_document_service
 from app.core.http_exceptions import HttpInternalServerError, HttpNotFound, ResourceType
-from app.schemas import DocumentCreate, DocumentResponse, DocumentSummary
+from app.schemas import (
+    DocumentCreate,
+    DocumentResponse,
+    DocumentSummary,
+    DocumentUpdate,
+)
 from app.services.documents import DocumentService
 
 router = APIRouter(prefix="/documents", tags=["documents"])
@@ -93,5 +98,43 @@ def list_documents(
     """
     try:
         return service.list_documents()
+    except StorageError as exc:  # unhandled storage error
+        raise HttpInternalServerError() from exc
+
+
+@router.patch(
+    "/{document_id}",
+    response_model=DocumentResponse,
+    status_code=status.HTTP_200_OK,
+    summary="Update a document",
+    responses={
+        200: {"description": "Document updated successfully"},
+        404: {"description": "Document not found"},
+        400: {"description": "Validation error"},
+        500: {"description": "Internal server error"},
+    },
+)
+def update_document(
+    payload: DocumentUpdate,
+    document_id: str = Path(..., description="Identifier of the document to update"),
+    service: DocumentService = Depends(get_document_service),
+) -> DocumentResponse:
+    """
+    Update an existing document's title and/or content.
+
+    Parameters:
+        document_id: The id of the document to update.
+        payload: Updated title and/or content (both optional).
+
+    Returns:
+        The updated document with new updated_at timestamp.
+    """
+    try:
+        return service.update_document(document_id, payload)
+    except DocumentNotFound as exc:
+        raise HttpNotFound(
+            resource_type=ResourceType.DOCUMENT,
+            resource_id=document_id,
+        ) from exc
     except StorageError as exc:  # unhandled storage error
         raise HttpInternalServerError() from exc
