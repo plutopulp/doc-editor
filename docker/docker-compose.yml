@@ -1,8 +1,26 @@
 # Usage:
-#   Production mode: docker compose up web
-#   Development mode: docker compose up web-dev
+#   Production mode: docker compose up api web
+#   Development mode: docker compose up api web-dev
 
 services:
+  api:
+    build:
+      context: ..
+      dockerfile: docker/api.Dockerfile
+    ports:
+      - "5005:5005"
+    volumes:
+      # Mount the source code for development
+      - ../services/api:/app
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:5005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
   web:
     build:
       context: ..
