@@ -7,11 +7,13 @@ type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
  *
  * @param path - API endpoint path (e.g. "/health")
  * @param method - HTTP method (default: "GET")
+ * @param body - Optional request body (will be JSON stringified)
  * @returns Response object from fetch
  */
 export async function backendClient(
   path: string,
-  method: HttpMethod = "GET"
+  method: HttpMethod = "GET",
+  body?: unknown
 ): Promise<Response> {
   const url = `${API_BASE_URL}${path}`;
 
@@ -21,5 +23,6 @@ export async function backendClient(
     headers: {
       "Content-Type": "application/json",
     },
+    body: body ? JSON.stringify(body) : undefined,
   });
 }
