@@ -1,0 +1,19 @@
+# Docker ignore file for the entire project
+# Applied when building with context at project root
+
+# Web service
+services/web/node_modules
+services/web/.next
+services/web/coverage
+services/web/.jest-cache
+
+# API service
+services/api/.venv
+services/api/__pycache__
+services/api/storage
+
+# General
+.git
+.DS_Store
+**/*.log
+

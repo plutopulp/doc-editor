@@ -28,6 +28,8 @@ services:
       target: runner
     ports:
       - "3000:3000"
+    environment:
+      - API_BASE_URL=http://api:5005
 
   web-dev:
     build:
@@ -41,3 +43,5 @@ services:
       - /app/node_modules
     stdin_open: true
     tty: true
+    environment:
+      - API_BASE_URL=http://api:5005

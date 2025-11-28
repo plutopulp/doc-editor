@@ -15,7 +15,7 @@ endif
 # Python API code paths (used for formatting / linting)
 API_CODE_PATHS := app
 
-.PHONY: help build rebuild start stop restart ps logs format-api lint-api
+.PHONY: help build rebuild build-web rebuild-web build-api rebuild-api start stop restart ps logs format-api lint-api
 
 # Default target
 .DEFAULT_GOAL := help
@@ -23,8 +23,12 @@ API_CODE_PATHS := app
 help:
 	@echo "Usage: make <target> [ENV=<dev|prod>]"
 	@echo "Targets:"
-	@echo "  build: Build the Docker images"
-	@echo "  rebuild: Rebuild the Docker images"
+	@echo "  build: Build all Docker images"
+	@echo "  rebuild: Rebuild all Docker images (no cache)"
+	@echo "  build-web: Build only web service"
+	@echo "  rebuild-web: Rebuild only web service (no cache)"
+	@echo "  build-api: Build only API service"
+	@echo "  rebuild-api: Rebuild only API service (no cache)"
 	@echo "  start: Start the Docker containers"
 	@echo "  stop: Stop the Docker containers"
 	@echo "  restart: Restart the Docker containers"
@@ -39,6 +43,26 @@ build:
 
 rebuild:
 	$(DC) build --no-cache $(DC_SERVICES)
+
+build-web:
+ifeq ($(ENV),dev)
+	$(DC) build web-dev
+else
+	$(DC) build web
+endif
+
+rebuild-web:
+ifeq ($(ENV),dev)
+	$(DC) build --no-cache web-dev
+else
+	$(DC) build --no-cache web
+endif
+
+build-api:
+	$(DC) build api
+
+rebuild-api:
+	$(DC) build --no-cache api
 
 start:
 	$(DC) up -d $(DC_SERVICES)
