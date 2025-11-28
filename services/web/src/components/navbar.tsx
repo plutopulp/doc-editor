@@ -28,7 +28,7 @@ export const Navbar: React.FC = () => {
           href="/"
           className="font-semibold text-slate-800 hover:text-slate-600 transition-colors"
         >
-          Materi Document Editor
+          Document Editor
         </Link>
       </div>
 

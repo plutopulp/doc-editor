@@ -38,19 +38,11 @@ export const Editor: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Top toolbar-ish area */}
-      <header className="border-b border-slate-200 bg-white px-4 py-2 flex items-center justify-between">
-        <div className="font-semibold text-slate-800">
-          Materi Document Editor
-        </div>
-        <div className="text-xs text-slate-500">
-          Selection: {selection.start} – {selection.end}
-        </div>
-      </header>
       {/* Formatting toolbar */}
       <LayoutToolbar
         layoutOptions={layoutOptions}
         onChange={updateLayoutOptions}
+        selection={selection}
       />
 
       <main className="flex flex-1 overflow-hidden">
