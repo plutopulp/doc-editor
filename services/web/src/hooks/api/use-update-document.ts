@@ -1,16 +1,10 @@
 import { useState } from "react";
 import type { DocumentResponse, DocumentUpdate } from "@/lib/api";
 
-/**
- * Hook for updating existing documents
- */
 export function useUpdateDocument() {
   const [isUpdating, setIsUpdating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * Update an existing document
-   */
   const updateDocument = async (id: string, data: DocumentUpdate) => {
     setIsUpdating(true);
     setError(null);
@@ -39,9 +33,6 @@ export function useUpdateDocument() {
     }
   };
 
-  /**
-   * Clear error state
-   */
   const clearError = () => setError(null);
 
   return {

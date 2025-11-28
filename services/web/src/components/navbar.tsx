@@ -3,9 +3,6 @@
 import Link from "next/link";
 import { useCreateDocument } from "@/hooks/api";
 
-/**
- * Navigation bar displayed across all pages
- */
 export const Navbar: React.FC = () => {
   const { createDocument, isCreating } = useCreateDocument();
 
@@ -16,7 +13,6 @@ export const Navbar: React.FC = () => {
         content: "",
       });
     } catch {
-      // Hack for now, not enough time to implement a proper error handling
       console.error("Failed to create document. Please try again.");
     }
   };

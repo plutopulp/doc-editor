@@ -8,9 +8,6 @@ interface EditorTextareaProps {
   layoutOptions: LayoutOptions;
 }
 
-/**
- * Text input area for the document editor
- */
 export const EditorTextarea: React.FC<EditorTextareaProps> = ({
   value,
   onChange,

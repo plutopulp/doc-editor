@@ -19,13 +19,13 @@ const TOOLBAR_FIELDS: ToolbarFieldConfig[] = [
     label: "Width",
     field: "pageWidth",
     inputWidth: "w-20",
-    options: [300, 400, 500, 600, 700, 794, 900, 1000], // A4 default included
+    options: [300, 400, 500, 600, 700, 794, 900, 1000],
   },
   {
     label: "Height",
     field: "pageHeight",
     inputWidth: "w-20",
-    options: [400, 500, 600, 700, 800, 900, 1000, 1123, 1300, 1500], // A4 default included
+    options: [400, 500, 600, 700, 800, 900, 1000, 1123, 1300, 1500],
   },
   {
     label: "Top",
@@ -65,11 +65,6 @@ const TOOLBAR_FIELDS: ToolbarFieldConfig[] = [
   },
 ];
 
-/**
- * LayoutToolbar with dropdown inputs
- *
- * Avoids numeric input problems and ensures only valid layout values are used.
- */
 export const LayoutToolbar: React.FC<LayoutToolbarProps> = ({
   layoutOptions,
   onChange,

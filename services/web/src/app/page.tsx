@@ -1,9 +1,6 @@
 import { DocumentCard } from "@/components/document-card";
 import { backendClient, DocumentListSchema } from "@/lib/api";
 
-/**
- * Home page - displays a list of all documents
- */
 export default async function HomePage() {
   const res = await backendClient("/documents");
 

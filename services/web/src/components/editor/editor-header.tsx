@@ -9,9 +9,6 @@ interface EditorHeaderProps {
   saveMessage: string | null;
 }
 
-/**
- * Document editor header with title input and save controls
- */
 export const EditorHeader: React.FC<EditorHeaderProps> = ({
   title,
   onTitleChange,

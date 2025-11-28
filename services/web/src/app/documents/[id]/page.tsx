@@ -1,29 +1,56 @@
-import { notFound } from "next/navigation";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { Editor } from "@/components/editor";
-import { backendClient, DocumentResponseSchema } from "@/lib/api";
+import { DocumentResponseSchema, DocumentResponse } from "@/lib/api";
 
-type PageProps = {
-  params: Promise<{ id: string }>;
-};
+export default function DocumentPage() {
+  const params = useParams();
+  const router = useRouter();
+  const [document, setDocument] = useState<DocumentResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-/**
- * Document editor page - displays a single document for editing
- */
-export default async function DocumentPage({ params }: PageProps) {
-  const { id } = await params;
+  useEffect(() => {
+    const loadDocument = async () => {
+      const id = params.id as string;
 
-  const res = await backendClient(`/documents/${id}`);
+      try {
+        const res = await fetch(`/api/documents/${id}`);
 
-  if (res.status === 404) {
-    notFound();
+        if (res.status === 404) {
+          router.push("/404");
+          return;
+        }
+
+        if (!res.ok) {
+          throw new Error("Failed to load document");
+        }
+
+        const json = await res.json();
+        const doc = DocumentResponseSchema.parse(json);
+        setDocument(doc);
+      } catch (error) {
+        throw error;
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadDocument();
+  }, [params.id, router]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <p className="text-slate-500">Loading document...</p>
+      </div>
+    );
   }
 
-  if (!res.ok) {
-    throw new Error("Failed to load document");
+  if (!document) {
+    return null;
   }
-
-  const json = await res.json();
-  const document = DocumentResponseSchema.parse(json);
 
   return <Editor initialDocument={document} />;
 }

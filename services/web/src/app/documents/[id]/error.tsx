@@ -3,9 +3,6 @@
 import { useEffect } from "react";
 import Link from "next/link";
 
-/**
- * Error boundary for document page
- */
 export default function Error({
   error,
   reset,

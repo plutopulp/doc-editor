@@ -27,13 +27,11 @@ export function usePagination(
   layoutOptions: LayoutOptions,
   debounceDelay: number = 0
 ) {
-  // Compute initial page slices from the initial document text
   const initialPages: PageSlice[] =
     initialText.length === 0
       ? [{ pageIndex: 0, start: 0, end: 0 }]
       : layout(initialText, layoutOptions);
 
-  // React state storing the current paginated layout
   const [pages, setPages] = useState<PageSlice[]>(initialPages);
 
   const recomputeLayoutImmediate = useCallback(

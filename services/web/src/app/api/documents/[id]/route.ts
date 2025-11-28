@@ -9,17 +9,12 @@ type RouteContext = {
   params: Promise<{ id: string }>;
 };
 
-/**
- * GET /api/documents/[id] - Fetch a single document by ID
- */
 export async function GET(
   _request: NextRequest,
   context: RouteContext
 ): Promise<NextResponse> {
   try {
     const { id } = await context.params;
-
-    // Call FastAPI backend
     const res = await backendClient(`/documents/${id}`);
 
     if (!res.ok) {
@@ -29,7 +24,6 @@ export async function GET(
       return NextResponse.json(error, { status: res.status });
     }
 
-    // Validate and return response
     const json = await res.json();
     const document = DocumentResponseSchema.parse(json);
 
@@ -42,9 +36,6 @@ export async function GET(
   }
 }
 
-/**
- * PATCH /api/documents/[id] - Update a document
- */
 export async function PATCH(
   request: NextRequest,
   context: RouteContext
@@ -52,11 +43,7 @@ export async function PATCH(
   try {
     const { id } = await context.params;
     const body = await request.json();
-
-    // Validate request body
     const validated = DocumentUpdateSchema.parse(body);
-
-    // Call FastAPI backend
     const res = await backendClient(`/documents/${id}`, "PATCH", validated);
 
     if (!res.ok) {
@@ -66,7 +53,6 @@ export async function PATCH(
       return NextResponse.json(error, { status: res.status });
     }
 
-    // Validate and return response
     const json = await res.json();
     const document = DocumentResponseSchema.parse(json);
 
