@@ -5,9 +5,17 @@ import { useEditorDocument } from "@/hooks/editor";
 import { PagePreview } from "./page-preview";
 import { useLayoutOptionsState } from "@/hooks/editor";
 import { LayoutToolbar } from "./layout-toolbar";
+import type { DocumentResponse } from "@/lib/api";
 
-export const Editor: React.FC = () => {
+interface EditorProps {
+  initialDocument?: DocumentResponse;
+}
+
+export const Editor: React.FC<EditorProps> = ({ initialDocument }) => {
   const { layoutOptions, updateLayoutOptions } = useLayoutOptionsState();
+
+  // TODO: Use initialDocument.content and initialDocument.title in Step 7
+  const initialContent = initialDocument?.content ?? "";
 
   const {
     text,
@@ -16,7 +24,7 @@ export const Editor: React.FC = () => {
     buffer,
     handleTextChange,
     handleSelectionChange,
-  } = useEditorDocument("", layoutOptions);
+  } = useEditorDocument(initialContent, layoutOptions);
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLTextAreaElement>) => {
