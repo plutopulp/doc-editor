@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_serializer
 
 
 class TimestampMixin(BaseModel):
@@ -10,6 +10,13 @@ class TimestampMixin(BaseModel):
 
     created_at: datetime = Field(..., description="Creation timestamp (UTC)")
     updated_at: datetime = Field(..., description="Last update timestamp (UTC)")
+
+    @field_serializer("created_at", "updated_at")
+    def _serialize_dt(self, value: datetime) -> str:
+        """
+        Serialize datetimes as ISO strings in UTC timezone.
+        """
+        return value.astimezone(timezone.utc).isoformat()
 
 
 class DocumentBase(BaseModel):

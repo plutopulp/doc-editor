@@ -1,6 +1,10 @@
 DC_FILEPATH := docker/docker-compose.yml
 DC := docker compose -f $(DC_FILEPATH)
 
+# Python API project (used for formatting, etc.)
+API_PROJECT_PATH := services/api
+POETRY := poetry -C $(API_PROJECT_PATH)
+
 # Helper variables for environment selection
 ifeq ($(ENV),dev)
 	DC_SERVICES = api web-dev
@@ -8,7 +12,10 @@ else
 	DC_SERVICES = api web
 endif
 
-.PHONY: help build rebuild start stop restart ps logs
+# Python API code paths (used for formatting / linting)
+API_CODE_PATHS := app
+
+.PHONY: help build rebuild start stop restart ps logs format-api lint-api
 
 # Default target
 .DEFAULT_GOAL := help
@@ -23,6 +30,8 @@ help:
 	@echo "  restart: Restart the Docker containers"
 	@echo "  ps: List the Docker containers"
 	@echo "  logs: Follow the logs of the Docker containers"
+	@echo "  format-api: Format API Python code with black and isort"
+	@echo "  lint-api: Lint API Python code with flake8"
 
 # Docker operations
 build:
@@ -45,3 +54,15 @@ ps:
 
 logs:
 	$(DC) logs -f $(DC_SERVICES)
+
+# Python formatting for API service
+format-api:
+	@echo "Formatting API Python code..."
+	$(POETRY) run black $(API_CODE_PATHS)
+	$(POETRY) run isort $(API_CODE_PATHS)
+
+# Python linting for API service
+lint-api:
+	@echo "Linting API Python code..."
+	$(POETRY) run flake8 $(API_CODE_PATHS)
+
