@@ -1,5 +1,10 @@
+from .dependencies import get_document_service
 from .exceptions import AppError, DocumentNotFound, StorageError
-from .http_exceptions import BaseHttpError, HttpInternalServerError, HttpNotFound
+from .http_exceptions import (
+    BaseHttpError,
+    HttpInternalServerError,
+    HttpNotFound,
+)
 
 __all__ = [
     "AppError",
@@ -8,4 +13,5 @@ __all__ = [
     "BaseHttpError",
     "HttpNotFound",
     "HttpInternalServerError",
+    "get_document_service",
 ]
