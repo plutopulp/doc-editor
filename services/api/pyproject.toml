@@ -27,8 +27,3 @@ build-backend = "poetry.core.masonry.api"
 [tool.isort]
 profile = "black"
 
-[tool.flake8]
-max-line-length = 92
-extend-ignore = "E203, W503"
-exclude = ".git,__pycache__,.venv,venv"
-per-file-ignores = """**/__init__.py: F401, E501, W293"""
