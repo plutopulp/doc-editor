@@ -3,8 +3,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 FROM base AS deps
-COPY services/web/package.json services/web/package-lock.json ./
-RUN npm ci --no-audit --no-fund
+COPY services/web/package.json ./
+# Generate fresh package-lock.json in Linux environment to avoid platform-specific binary issues
+RUN npm install --no-audit --no-fund --include=optional
 
 FROM deps AS dev
 ENV NODE_ENV=development
@@ -18,6 +19,8 @@ FROM deps AS builder
 ENV NODE_ENV=production
 ENV SKIP_ENV_VALIDATION=1
 COPY services/web ./
+# Rebuild native modules for the current platform
+RUN npm rebuild
 RUN npm run build
 
 FROM node:22-bookworm-slim AS runner
