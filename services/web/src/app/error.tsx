@@ -2,9 +2,6 @@
 
 import { useEffect } from "react";
 
-/**
- * Error boundary for root-level pages
- */
 export default function Error({
   error,
   reset,

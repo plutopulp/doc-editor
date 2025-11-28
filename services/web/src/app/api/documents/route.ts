@@ -6,17 +6,10 @@ import {
   DocumentResponseSchema,
 } from "@/lib/api";
 
-/**
- * POST /api/documents - Create a new document
- */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-
-    // Validate request body
     const validated = DocumentCreateSchema.parse(body);
-
-    // Call FastAPI backend
     const res = await backendClient("/documents", "POST", validated);
 
     if (!res.ok) {
@@ -26,7 +19,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(error, { status: res.status });
     }
 
-    // Validate and return response
     const json = await res.json();
     const document = DocumentResponseSchema.parse(json);
 
@@ -46,9 +38,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * GET /api/documents - List all documents
- */
 export async function GET() {
   try {
     const res = await backendClient("/documents");
@@ -60,7 +49,6 @@ export async function GET() {
       return NextResponse.json(error, { status: res.status });
     }
 
-    // Validate and return response
     const json = await res.json();
     const documents = DocumentListSchema.parse(json);
 

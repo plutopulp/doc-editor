@@ -1,21 +1,11 @@
 import { z } from "zod";
 
-/**
- * Zod schemas for FastAPI response validation
- */
-
-// Health endpoint
 export const HealthSchema = z.object({
   message: z.string(),
 });
 
 export type Health = z.infer<typeof HealthSchema>;
 
-// Document schemas (mirrors FastAPI Pydantic models)
-
-/**
- * Schema for creating a new document
- */
 export const DocumentCreateSchema = z.object({
   title: z.string().min(1, "Title is required"),
   content: z.string(),
@@ -23,10 +13,6 @@ export const DocumentCreateSchema = z.object({
 
 export type DocumentCreate = z.infer<typeof DocumentCreateSchema>;
 
-/**
- * Schema for updating an existing document
- * Both fields are optional to allow partial updates
- */
 export const DocumentUpdateSchema = z.object({
   title: z.string().optional(),
   content: z.string().optional(),
@@ -34,9 +20,6 @@ export const DocumentUpdateSchema = z.object({
 
 export type DocumentUpdate = z.infer<typeof DocumentUpdateSchema>;
 
-/**
- * Schema for full document response
- */
 export const DocumentResponseSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -47,9 +30,6 @@ export const DocumentResponseSchema = z.object({
 
 export type DocumentResponse = z.infer<typeof DocumentResponseSchema>;
 
-/**
- * Schema for document summary (used in listings)
- */
 export const DocumentSummarySchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -59,9 +39,6 @@ export const DocumentSummarySchema = z.object({
 
 export type DocumentSummary = z.infer<typeof DocumentSummarySchema>;
 
-/**
- * Schema for list of document summaries
- */
 export const DocumentListSchema = z.array(DocumentSummarySchema);
 
 export type DocumentList = z.infer<typeof DocumentListSchema>;

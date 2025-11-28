@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { useUpdateDocument } from "@/hooks/api";
 
-/**
- * Hook for managing document save state and operations
- */
 export function useDocumentSave(
   documentId: string | undefined,
   initialTitle: string,
@@ -16,11 +13,9 @@ export function useDocumentSave(
   const [lastSavedContent, setLastSavedContent] = useState(initialContent);
   const [saveMessage, setSaveMessage] = useState<string | null>(null);
 
-  // Track if there are unsaved changes
   const isDirty = (currentContent: string) =>
     title !== lastSavedTitle || currentContent !== lastSavedContent;
 
-  // Save handler
   const handleSave = async (currentContent: string) => {
     if (!documentId) return;
     if (title === lastSavedTitle && currentContent === lastSavedContent) return;

@@ -2,17 +2,11 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { DocumentResponse, DocumentCreate } from "@/lib/api";
 
-/**
- * Hook for creating new documents
- */
 export function useCreateDocument() {
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  /**
-   * Create a new document and navigate to its editor
-   */
   const createDocument = async (data: DocumentCreate) => {
     setIsCreating(true);
     setError(null);
@@ -29,8 +23,6 @@ export function useCreateDocument() {
       }
 
       const document: DocumentResponse = await res.json();
-
-      // Navigate to the new document's editor
       router.push(`/documents/${document.id}`);
 
       return document;
@@ -43,9 +35,6 @@ export function useCreateDocument() {
     }
   };
 
-  /**
-   * Clear error state
-   */
   const clearError = () => setError(null);
 
   return {

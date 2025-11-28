@@ -37,6 +37,7 @@ const Page: React.FC<PageProps> = ({
             fontSize: `${layoutOptions.fontSize}px`,
             lineHeight: `${layoutOptions.lineHeight}px`,
           }}
+          suppressHydrationWarning
         >
           {text}
         </pre>

@@ -5,9 +5,6 @@ type DocumentCardProps = {
   document: DocumentSummary;
 };
 
-/**
- * Card component for displaying document summaries in the list view
- */
 export const DocumentCard: React.FC<DocumentCardProps> = ({ document }) => {
   const createdDate = new Date(document.created_at).toLocaleDateString(
     "en-US",
