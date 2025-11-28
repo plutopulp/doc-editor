@@ -24,6 +24,7 @@ export function useCreateDocument() {
 
       const document: DocumentResponse = await res.json();
       router.push(`/documents/${document.id}`);
+      setIsCreating(false);
 
       return document;
     } catch (err) {
