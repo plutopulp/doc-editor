@@ -144,6 +144,18 @@ class DocumentStorage:
         """
         List stored documents.
 
-        Stub implementation: always return empty list.
+        Returns a list of document summaries derived from `index.json`,
+        sorted by `updated_at` in descending order (most recent first).
         """
-        return []
+        index = self._read_index()
+
+        summaries: list[dict[str, t.Any]] = list(index.values())
+
+        # Sort by updated_at descending; missing values should not occur but
+        # fall back to the empty string in case, which will sort last.
+        summaries.sort(
+            key=lambda item: item.get("updated_at") or "",
+            reverse=True,
+        )
+
+        return summaries
