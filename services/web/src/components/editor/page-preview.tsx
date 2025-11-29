@@ -21,7 +21,7 @@ const Page: React.FC<PageProps> = ({
   return (
     <div className="flex flex-col items-center">
       <div
-        className="bg-white shadow-xl border border-gray-200 rounded-md box-border"
+        className="bg-white shadow-xl rounded-md outline outline-gray-200"
         style={{
           width: layoutOptions.pageWidth,
           height: layoutOptions.pageHeight,
@@ -32,10 +32,11 @@ const Page: React.FC<PageProps> = ({
         }}
       >
         <pre
-          className="whitespace-pre-wrap font-sans wrap-break-word"
+          className="whitespace-pre-wrap"
           style={{
             fontSize: `${layoutOptions.fontSize}px`,
             lineHeight: `${layoutOptions.lineHeight}px`,
+            fontFamily: layoutOptions.font,
           }}
           suppressHydrationWarning
         >

@@ -84,8 +84,12 @@ export function layout(
     const width = measureTextWidth(token, font);
     const tokenLength = token.length;
 
-    // If token alone exceeds maxWidth, treat it as a full line
-    const shouldForceNewLine = lineWidth > 0 && lineWidth + width > maxWidth;
+    // If token alone exceeds maxWidth, treat it as a full line.
+    // However, whitespace tokens should NOT trigger line wraps - they "hang"
+    // past the line width to match CSS `white-space: pre-wrap` behavior.
+    const isWhitespaceToken = /^\s+$/.test(token);
+    const wouldOverflow = lineWidth > 0 && lineWidth + width > maxWidth;
+    const shouldForceNewLine = wouldOverflow && !isWhitespaceToken;
 
     if (shouldForceNewLine) {
       lineWidth = 0;
