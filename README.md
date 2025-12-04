@@ -2,6 +2,24 @@
 
 A minimal document editor with live pagination. Type text and watch it flow across fixed-size A4 pages in real time. Save and load documents via a simple backend API.
 
+## Context
+
+This project was built as a take-home case study for a startup interview, with a 24 hour time constraint.
+
+The brief asked for:
+
+- Live pagination during editing with visible page boundaries and page numbers
+- Content reflow across pages as you type
+- Save/load via a simple backend API
+- Deterministic layout that reproduces on reload
+- Clean separation between editor state, layout engine, and persistence
+
+I chose to use a piece table for the text buffer, though the data structure was left open to the candidate.
+
+Given the time constraint, some areas weren't fully polished. See [IMPROVEMENT_IDEAS.md](IMPROVEMENT_IDEAS.md) for notes on some of the things I'd change with more time.
+
+For details on AI tool usage during development, see [AI_USAGE.md](AI_USAGE.md).
+
 ## Quick Start
 
 Requirements: Docker and Docker Compose
